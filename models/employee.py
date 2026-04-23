@@ -10,11 +10,6 @@ class EmployeeDataManagement(models.Model):
         ('saved', 'Saved'),
     ], string="State", default='draft', tracking=True)
 
-    report_type = fields.Selection([
-        ('pdf', 'PDF'),
-        ('excel', 'Excel'),
-    ], string="Report Type", default='pdf')
-
     employee_id = fields.Char(
         string="Employee ID",
         required=True,
@@ -23,21 +18,10 @@ class EmployeeDataManagement(models.Model):
         default='New'
     )
 
-    name = fields.Char(
-        string="Name", required=True, tracking=True
-    )
-
-    work_address = fields.Char(
-        string="Work Address", tracking=True
-    )
-
-    work_email = fields.Char(
-        string="Work Email", tracking=True
-    )
-
-    work_phone = fields.Char(
-        string="Work Phone", tracking=True
-    )
+    name = fields.Char(string="Name", required=True, tracking=True)
+    work_address = fields.Char(string="Work Address", tracking=True)
+    work_email = fields.Char(string="Work Email", tracking=True)
+    work_phone = fields.Char(string="Work Phone", tracking=True)
 
     department_id = fields.Many2one(
         'hr.department',
@@ -56,29 +40,32 @@ class EmployeeDataManagement(models.Model):
     private_email = fields.Char(string="Private Email", tracking=True)
     private_phone = fields.Char(string="Private Phone", tracking=True)
 
+    # 🔢 Sequence
     @api.model
     def create(self, vals):
         if vals.get('employee_id', 'New') == 'New':
             vals['employee_id'] = self.env['ir.sequence'].next_by_code(
                 'employee.data.management') or 'New'
-        return super(EmployeeDataManagement, self).create(vals)
+        return super().create(vals)
 
+    # ✅ SAVE BUTTON (IMPORTANT)
     def action_save(self):
-        self.state = 'saved'
+        for record in self:
+            record.state = 'saved'
 
-    def action_draft(self):
-        self.state = 'draft'
+    # ✅ PDF REPORT
+    def action_print_pdf(self):
+        return {
+            'type': 'ir.actions.report',
+            'report_name': 'employee_data_management.employee_report_template',  # must match XML
+            'report_type': 'qweb-pdf',
+            'res_id': self.id,
+        }
 
-    def action_set_pdf(self):
-        self.report_type = 'pdf'
-
-    def action_set_excel(self):
-        self.report_type = 'excel'
-
-    def action_print_report(self):
-        if self.report_type == 'pdf':
-            # TODO: trigger PDF report action
-            pass
-        elif self.report_type == 'excel':
-            # TODO: trigger Excel export action
-            pass
+    # ✅ EXCEL REPORT
+    def action_print_excel(self):
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/employee/excel_report/%s' % self.id,
+            'target': 'self',
+        }

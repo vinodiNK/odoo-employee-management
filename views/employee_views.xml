@@ -68,20 +68,29 @@
                 <form string="Employee">
 
                     <header>
-                        <field name="state" widget="statusbar" statusbar_visible="draft,saved"/>
-                        <button name="action_save" type="object" string="Save" class="btn-primary"
-                                invisible="state == 'saved'"/>
-                        <button name="action_print_report" type="object" string="Print Report"
-                                class="btn-secondary" invisible="state == 'draft'"/>
+    <field name="state" widget="statusbar" statusbar_visible="draft,saved"/>
 
-                         <div class="o_field_radio d-flex align-items-center gap-2 ms-3"
-         invisible="state == 'draft'">
-        <span class="fw-bold me-2">Report Type:</span>
-        <field name="report_type" widget="radio"
-               options="{'horizontal': true}"/>
-    </div>
+    <!-- Save Button -->
+    <button name="action_save"
+            type="object"
+            string="Save"
+            class="btn-primary"
+            invisible="state == 'saved'"/>
 
-                    </header>
+    <!-- Print PDF -->
+    <button name="action_print_pdf"
+            type="object"
+            string="Print PDF Report"
+            class="btn-secondary"
+            invisible="state == 'draft'"/>
+
+    <!-- Print Excel -->
+    <button name="action_print_excel"
+            type="object"
+            string="Print Excel Report"
+            class="btn-success"
+            invisible="state == 'draft'"/>
+</header>
 
                     <sheet>
 

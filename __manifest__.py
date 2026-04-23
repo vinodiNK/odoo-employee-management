@@ -10,11 +10,14 @@
     ],
 
     "data": [
-        "security/ir.model.access.csv",
+"security/ir.model.access.csv",
+        "data/sequence.xml",
         "views/employee_views.xml",
+        "reports/employee_report.xml",
+        "reports/employee_template.xml",
         "views/menu.xml",
-
     ],
-    'installable': True,
-    'application': True,
+    "installable": True,
+    "application": True,
+
 }

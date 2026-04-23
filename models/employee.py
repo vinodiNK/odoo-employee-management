@@ -1,14 +1,19 @@
 from odoo import api, fields, models
 
 class EmployeeDataManagement(models.Model):
-    _name ='employee.data.management'
-    _inherit = ['mail.thread']
+    _name = 'employee.data.management'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = 'Employee Details'
 
-    state = fields.Selection([  # ← ADD THIS
+    state = fields.Selection([
         ('draft', 'Draft'),
         ('saved', 'Saved'),
     ], string="State", default='draft', tracking=True)
+
+    report_type = fields.Selection([
+        ('pdf', 'PDF'),
+        ('excel', 'Excel'),
+    ], string="Report Type", default='pdf')
 
     employee_id = fields.Char(
         string="Employee ID",
@@ -23,15 +28,15 @@ class EmployeeDataManagement(models.Model):
     )
 
     work_address = fields.Char(
-        string="Work Address",  tracking=True
+        string="Work Address", tracking=True
     )
 
     work_email = fields.Char(
-        string="Work Email",  tracking=True
+        string="Work Email", tracking=True
     )
 
     work_phone = fields.Char(
-        string="Work Phone",  tracking=True
+        string="Work Phone", tracking=True
     )
 
     department_id = fields.Many2one(
@@ -46,18 +51,16 @@ class EmployeeDataManagement(models.Model):
         string="Job Position",
         tracking=True
     )
+
     private_address = fields.Char(string="Private Address", tracking=True)
-
     private_email = fields.Char(string="Private Email", tracking=True)
-
     private_phone = fields.Char(string="Private Phone", tracking=True)
-
-
 
     @api.model
     def create(self, vals):
         if vals.get('employee_id', 'New') == 'New':
-            vals['employee_id'] = self.env['ir.sequence'].next_by_code('employee.data.management') or 'New'
+            vals['employee_id'] = self.env['ir.sequence'].next_by_code(
+                'employee.data.management') or 'New'
         return super(EmployeeDataManagement, self).create(vals)
 
     def action_save(self):
@@ -65,3 +68,17 @@ class EmployeeDataManagement(models.Model):
 
     def action_draft(self):
         self.state = 'draft'
+
+    def action_set_pdf(self):
+        self.report_type = 'pdf'
+
+    def action_set_excel(self):
+        self.report_type = 'excel'
+
+    def action_print_report(self):
+        if self.report_type == 'pdf':
+            # TODO: trigger PDF report action
+            pass
+        elif self.report_type == 'excel':
+            # TODO: trigger Excel export action
+            pass

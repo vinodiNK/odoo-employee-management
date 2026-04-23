@@ -68,11 +68,21 @@
                 <form string="Employee">
 
                     <header>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,saved"/>
-                    <button name="action_save" type="object" string="Save" class="btn-primary"
-                            invisible="state == 'saved'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,saved"/>
+                        <button name="action_save" type="object" string="Save" class="btn-primary"
+                                invisible="state == 'saved'"/>
+                        <button name="action_print_report" type="object" string="Print Report"
+                                class="btn-secondary" invisible="state == 'draft'"/>
 
-                </header>
+                         <div class="o_field_radio d-flex align-items-center gap-2 ms-3"
+         invisible="state == 'draft'">
+        <span class="fw-bold me-2">Report Type:</span>
+        <field name="report_type" widget="radio"
+               options="{'horizontal': true}"/>
+    </div>
+
+                    </header>
+
                     <sheet>
 
                         <group>
@@ -84,6 +94,7 @@
                             <field name="work_email" readonly="state == 'saved'"/>
                             <field name="work_phone" readonly="state == 'saved'"/>
                         </group>
+
 
                         <notebook>
                             <page string="Private Info">

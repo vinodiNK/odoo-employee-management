@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
-    <!-- REPORT ACTION -->
     <record id="action_employee_pdf_report" model="ir.actions.report">
         <field name="name">Employee Report</field>
         <field name="model">employee.data.management</field>
         <field name="report_type">qweb-pdf</field>
+
+        <!-- MUST MATCH TEMPLATE ID -->
         <field name="report_name">employee_data_management.employee_report_template</field>
         <field name="report_file">employee_data_management.employee_report_template</field>
-        <field name="print_report_name">'Employee - %s' % (object.name)</field>
     </record>
-
 </odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <!-- ROOT MENU (top level app) -->
+    <menuitem id="menu_employee_root"
+              name="Employee Data Management"
+              web_icon="employee_data_management,static/description/icon.png"
+              sequence="10"/>
+
+    <!-- EMPLOYEES (parent dropdown) -->
+    <menuitem id="menu_employee_main"
+              name="Employees"
+              parent="menu_employee_root"
+              sequence="1"/>
+
+    <!-- EMPLOYEES > Employees List -->
+    <menuitem id="menu_employee_list"
+              name="Employees"
+              parent="menu_employee_main"
+              action="action_employee_data_management"
+              sequence="1"/>
+
+
+</odoo>
